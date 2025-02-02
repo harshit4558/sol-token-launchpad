@@ -18,10 +18,10 @@ const TokenLaunchpad = () => {
 
         const nameInput = document.getElementById('name').value;
         const symbolInput = document.getElementById('symbol').value;
-        // const imageUrl = document.getElementById('imageUrl').value;
+        const imageUrl = document.getElementById('imageUrl').value;
         const supply = document.getElementById('supply').value;
         const decimals = document.getElementById('decimals').value;
-        const imageUrl = 'https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/image.png';
+        // const imageUrl = 'https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/image.png';
         
         const keypair = Keypair.generate();
         const formData = {
