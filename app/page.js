@@ -16,9 +16,15 @@ export default function Home() {
           <WalletModalProvider>
 
           <div >          
-            <div className=" flex justify-center items-center ">
-              SOL Token Launchpad
+            <div className=" flex justify-center items-center h-10 p-10 ">
+              <h1 className='text-3xl'>  
+                SOL Token Launchpad
+              </h1>
             </div>
+          </div>
+          <div className="flex justify-between">
+            <WalletMultiButton/>
+            <WalletDisconnectButton/>
           </div>
           <div className="flex flex-col justify-center items-center mt-20 ">
 
