@@ -6,6 +6,7 @@ import { Keypair, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { createInitializeInstruction, pack } from '@solana/spl-token-metadata';
 import Example from './ui/encryptButton';
 import EncryptButton from './ui/encryptButton';
+import { uploadMetadata } from '@/actions/action';
 
 
 const TokenLaunchpad = () => {
@@ -15,20 +16,29 @@ const TokenLaunchpad = () => {
 
     async function newToken() {
 
-        // const name = document.getElementById('name').value;
-        // const symbol = document.getElementById('symbol').value;
+        const nameInput = document.getElementById('name').value;
+        const symbolInput = document.getElementById('symbol').value;
         // const imageUrl = document.getElementById('imageUrl').value;
-        // const supply = document.getElementById('suppluy').value;
+        const supply = document.getElementById('supply').value;
         const decimals = document.getElementById('decimals').value;
-
+        const imageUrl = 'https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/image.png';
+        
         const keypair = Keypair.generate();
+        const formData = {
+            name : nameInput,
+            symbol : symbolInput,
+            image : imageUrl,
+            description : "only av on sol"
+        }
+        const metadataUrl = await uploadMetadata(formData);
         const metadata = {
             mint : keypair.publicKey,
-            name : "Token x",
-            symbol : "Token x",
-            uri : `${imageUrl}`,
+            name :  nameInput,
+            symbol : symbolInput,
+            uri : metadataUrl,
             additionalMetadata : []
         }
+        
         const mintLen = getMintLen([ExtensionType.MetadataPointer]);
         const metadataLen = TYPE_SIZE + LENGTH_SIZE + pack(metadata).length;
         const lamports = await connection.getMinimumBalanceForRentExemption(mintLen + metadataLen);
@@ -86,7 +96,7 @@ const TokenLaunchpad = () => {
                 keypair.publicKey,
                 associatedTokenAddress,
                 wallet.publicKey,
-                2000,
+                supply * 10**decimals,
                 [],
                 TOKEN_2022_PROGRAM_ID
             )
@@ -111,7 +121,7 @@ const TokenLaunchpad = () => {
         <input id='name' type='text' placeholder='Name'></input>
         <input id='symbol' type='text' placeholder='Symbol'></input>
         <input id='imageUrl' type='text' placeholder='Image URL'></input>
-        <input id='supply' type='text' placeholder='Supply'></input>
+        <input id='supply' type='number' placeholder='Supply'></input>
         <input id='decimals' type='text' placeholder='Decimals'></input>
         <EncryptButton onClick={newToken}>Create Token</EncryptButton>
         
